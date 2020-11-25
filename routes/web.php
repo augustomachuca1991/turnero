@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('principal');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -24,3 +24,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/pacientes', function () {
     return view('pacientes.index');
 })->name('pacientes');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/turnos', function () {
+    return view('turnos.index');
+})->name('turnos');
