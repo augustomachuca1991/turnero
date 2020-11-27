@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\PacientesTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Route::middleware(['auth:sanctum', 'verified'])->get('/pacientes', PacientesTable::class)->name('pacientes');
 Route::middleware(['auth:sanctum', 'verified'])->get('/pacientes', function () {
     return view('pacientes.index');
 })->name('pacientes');

@@ -52,12 +52,12 @@
                         </div>
 
                         <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                            <i class="glyphicon glyphicon-user"></i>&nbsp;{{ __('Profile') }}
+                            {{ __('Profile') }}
                         </x-jet-dropdown-link>
 
                         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
-                                <i class="glyphicon glyphicon-asterisk"></i>&nbsp;{{ __('API Tokens') }}
+                                {{ __('API Tokens') }}
                             </x-jet-dropdown-link>
                         @endif
 
@@ -71,12 +71,12 @@
 
                             <!-- Team Settings -->
                             <x-jet-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                <i class="glyphicon glyphicon-cog"></i>&nbsp;{{ __('Team Settings') }}
+                                {{ __('Team Settings') }}
                             </x-jet-dropdown-link>
 
                             @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                                 <x-jet-dropdown-link href="{{ route('teams.create') }}">
-                                    <i class="glyphicon glyphicon-plus"></i>&nbsp;{{ __('Create New Team') }}
+                                    {{ __('Create New Team') }}
                                 </x-jet-dropdown-link>
                             @endcan
 
@@ -100,7 +100,7 @@
                             <x-jet-dropdown-link href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
                                                             this.closest('form').submit();">
-                                <i class="glyphicon glyphicon-off"></i>&nbsp;{{ __('Logout') }}
+                                {{ __('Logout') }}
                             </x-jet-dropdown-link>
                         </form>
                     </x-slot>
