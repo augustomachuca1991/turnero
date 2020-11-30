@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Models\Paciente;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 
 class PacientesTable extends Component
@@ -23,14 +24,14 @@ class PacientesTable extends Component
 
     public $photo;
 
-    public $paciente_id,$name,$email,$foto,$telefono,$domicilio,$anio,$profesion,$estado;
+    public $paciente_id,$dni,$name,$email,$foto,$telefono,$domicilio,$anio,$profesion,$estado;
     public $openModal = false;
     public $editMode = false;
 
     public function render()
     {
         return view('livewire.pacientes-table' , [
-        	'pacientes' => User::where('name' ,'LIKE' ,"%{$this->search}%")
+        	'pacientes' => Paciente::where('nombre' ,'LIKE' ,"%{$this->search}%")
         						->orWhere('email' ,'LIKE' ,"%{$this->search}%")
         						->paginate($this->perPage)
         ]);
@@ -51,6 +52,7 @@ class PacientesTable extends Component
     public function modal()
     {
         $this->empty();
+        $this->foto = Storage::url('foto-pacientes\default-user.jpg');
         $this->openModal = true;
     }
 
@@ -58,14 +60,24 @@ class PacientesTable extends Component
 
     public function store()
     {
-        User::create([
-            'name' => $this->name,
+        $this->validate([
+            'foto' => 'image|max:1024', // 1MB Max
+        ]);
+        $this->foto->store('foto-pacientes');
+        Paciente::create([
+            'dni' => '36269830',
+            'nombre' => $this->name,
             'email' => $this->email,
-            'password' => bcrypt('12345678'),
-            'remember_token' => Str::random(10),
+            'foto_path' => $this->foto,
+            'telefono' => $this->telefono,
+            'domicilio' => $this->domicilio,
+            'edad' => $this->anio,
+            'ocupacion' => $this->profesion,
+            'edad' => $this->anio,
+            'estado' => true,
         ]);
         $this->empty();
-        $this->cancelar();
+        $this->closeModal();
     }
 
 
@@ -74,29 +86,30 @@ class PacientesTable extends Component
     {
         $this->openModal = false;
         $this->editMode = false;
+        $this->empty();
     }
 
 
 
-    public function showModal(User $paciente)
+    public function showModal(Paciente $paciente)
     {
         $this->openModal = !$this->openModal;
 
     }
 
 
-    public function editModal(User $paciente)
+    public function editModal(Paciente $paciente)
     {
         $this->openModal = !$this->openModal;
         $this->editMode = !$this->editMode;
         $this->paciente_id = $paciente->id;
-        $this->name = $paciente->name;
+        $this->name = $paciente->nombre;
         $this->email = $paciente->email;
-        $this->foto = $paciente->profile_photo_url;
-        $this->telefono = '+543794327084';
-        $this->domicilio = 'Loreto 5493';
-        $this->anio = '28';
-        $this->profesion = 'Ingeniero en Infrestructura';
+        $this->foto = $paciente->foto_path;
+        $this->telefono = $paciente->telefono;
+        $this->domicilio = $paciente->domicilio;
+        $this->anio = $paciente->edad;
+        $this->profesion = $paciente->ocupacion;
         $this->estado = true;
 
     }
@@ -104,18 +117,26 @@ class PacientesTable extends Component
 
     public function update()
     {
-        $paciente = User::find($this->paciente_id);
+        $paciente = Paciente::find($this->paciente_id);
         $paciente->update([
-            'name' => $this->name,
+            'dni' => '36269830',
+            'nombre' => $this->name,
             'email' => $this->email,
-            'profile_photo_path' => $this->foto,
+            'foto_path' => $this->foto,
+            'telefono' => $this->telefono,
+            'domicilio' => $this->domicilio,
+            'ocupacion' => $this->profesion,
+            'edad' => $this->anio,
+            'estado' => $this->estado,
+            'edad' => $this->anio,
         ]);
-        $this->cancelar();
+        $this->empty();
+        $this->closeModal();
 
     }
 
 
-    public function destroy(User $paciente)
+    public function destroy(Paciente $paciente)
     {
         $paciente->delete();
     }
@@ -127,10 +148,10 @@ class PacientesTable extends Component
     public function getPhoto()
     {
         $this->validate([
-            'photo' => 'image|max:1024', // 1MB Max
+            'foto' => 'image|max:1024', // 1MB Max
         ]);
 
-        $path = $this->photo->store('profile-photos');
+        $path = $this->foto->store('foto-pacientes');
         $this->foto = $path;
     }
 
@@ -142,6 +163,7 @@ class PacientesTable extends Component
     {
         //limpia las variables
         $this->reset([
+            'dni',
             'paciente_id',
             'name',
             'email',
@@ -150,7 +172,7 @@ class PacientesTable extends Component
             'domicilio',
             'anio',
             'profesion',
-            'estado'
+            'estado',
         ]);
     }
 }

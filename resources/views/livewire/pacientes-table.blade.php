@@ -45,14 +45,6 @@
                                  <label for="email_address" class="block text-sm font-medium text-gray-700">Email address</label>
                                  <input wire:model="email" type="text" id="email_address" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
                               </div>
-                              <div class="col-span-6 sm:col-span-3">
-                                 <label for="country" class="block text-sm font-medium text-gray-700">Country / Region</label>
-                                 <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option>United States</option>
-                                    <option>Canada</option>
-                                    <option>Mexico</option>
-                                 </select>
-                              </div>
                               <div class="col-span-6">
                                  <label for="domicilio" class="block text-sm font-medium text-gray-700">Domicilio</label>
                                  <input wire:model="domicilio" type="text" id="domicilio" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
@@ -109,14 +101,22 @@
                                  <label for="email_address" class="block text-sm font-medium text-gray-700">Correo Electronico</label>
                                  <input wire:model="email" type="text" id="email_address" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
                               </div>
-                              <div class="col-span-6 sm:col-span-3">
-                                 <label for="country" class="block text-sm font-medium text-gray-700">Country / Region</label>
-                                 <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option>United States</option>
-                                    <option>Canada</option>
-                                    <option>Mexico</option>
+                              <!--<div class="col-span-6 sm:col-span-3">
+                                 <label for="country" class="block text-sm font-medium text-gray-700">Estado</label>
+                                 <select wire:model="estado" id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
                                  </select>
+                              </div>-->
+                              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                 <label for="anio" class="block text-sm font-medium text-gray-700">Edad</label>
+                                 <input wire:model="anio" type="number" id="anio" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
                               </div>
+                              <div class="col-span-6 sm:col-span-3 lg:col-span-4">
+                                 <label for="profesion" class="block text-sm font-medium text-gray-700">Ocupacion</label>
+                                 <input wire:model="profesion" type="text" id="profesion" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
+                              </div>
+
                               <div class="col-span-6">
                                  <label for="domicilio" class="block text-sm font-medium text-gray-700">Domicilio</label>
                                  <input wire:model="domicilio" type="text" id="domicilio" class="py-2 px-3 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md">
@@ -124,32 +124,12 @@
                               <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                  <label for="city" class="block text-sm font-medium text-gray-700">Foto</label>
                                  <span class="mt-2 inline-block h-8 w-8 rounded-full overflow-hidden bg-gray-100">
-                                    <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                       <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>
+                                    
+                                    <img wire:model="foto"  class="h-full w-full text-gray-300" src="{{$foto}}" alt="...">
+
                                  </span>
-                                 <button  type="button" class="bg-white border py-2 px-3 border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                 Cambiar
-                                 </button>
-                              </div>
-                              <div class="col-span-6 sm:col-span-3 lg:col-span-4">
-                                 <label for="state" class="block text-sm font-medium text-gray-700">Cover photo</label>
-                                 <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                    <div class="space-y-1 text-center">
-                                       <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                       </svg>
-                                       <p class="text-sm text-gray-600">
-                                          <button type="file" class="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                          Upload a file
-                                          </button>
-                                          or drag and drop
-                                       </p>
-                                       <p class="text-xs text-gray-500">
-                                          PNG, JPG, GIF up to 10MB
-                                       </p>
-                                    </div>
-                                 </div>
+                                 <input  wire:change="getPhoto" type="file" class="bg-white border py-2 px-3 border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                 </input>
                               </div>
                            </div>
                         </div>
@@ -220,7 +200,7 @@
                                     Nombre
                                  </th>
                                  <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Direccíón
+                                    Domicilio
                                  </th>
                                  <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Años
@@ -229,7 +209,7 @@
                                     Telefono
                                  </th>
                                  <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Profesión
+                                    Ocupación
                                  </th>
                                  <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Estado
@@ -245,11 +225,11 @@
                                  <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                        <div class="flex-shrink-0 h-10 w-10">
-                                          <img class="h-10 w-10 rounded-full" src="{{$paciente->profile_photo_url}}" alt="{{$paciente->name}}">
+                                          <img class="h-10 w-10 rounded-full" src="{{$paciente->profile_photo_url}}" alt="{{$paciente->nombre}}">
                                        </div>
                                        <div class="ml-4">
                                           <div class="text-sm font-medium text-gray-900">
-                                             {{$paciente->name}}
+                                             {{$paciente->nombre}}
                                           </div>
                                           <div class="text-sm text-gray-500">
                                              {{$paciente->email}}
@@ -258,22 +238,28 @@
                                     </div>
                                  </td>
                                  <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                                    <div class="text-sm text-gray-500">Optimization</div>
+                                    <!--<div class="text-sm text-gray-900">{{$paciente->domicilio}}</div>-->
+                                    <div class="text-sm text-gray-500">{{$paciente->domicilio}}</div>
                                  </td>
                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    26
+                                    {{$paciente->edad}}
                                  </td>
                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    +5493794327084
+                                    {{$paciente->telefono}}
                                  </td>
                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    Administrativo
+                                    {{$paciente->ocupacion}}
                                  </td>
                                  <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Active
-                                    </span>
+                                    @if($paciente->estado)
+                                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                       Activo
+                                       </span>
+                                    @else
+                                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                       Inactivo
+                                       </span>
+                                    @endif
                                  </td>
                                  <td class=" px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                  	<div class="inline-flex">
