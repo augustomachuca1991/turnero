@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\Storage;
 
 
 class PacientesTable extends Component
@@ -20,20 +20,23 @@ class PacientesTable extends Component
     ];
 
     public $search = '';
-    public $perPage = '5';
+    public $perPage = 5;
 
-    public $photo;
+    public $photo_preview = '';
 
     public $paciente_id,$dni,$name,$email,$foto,$telefono,$domicilio,$anio,$profesion,$estado;
     public $openModal = false;
     public $editMode = false;
+    public $readOnly = false;
 
     public function render()
     {
         return view('livewire.pacientes-table' , [
         	'pacientes' => Paciente::where('nombre' ,'LIKE' ,"%{$this->search}%")
         						->orWhere('email' ,'LIKE' ,"%{$this->search}%")
+                                ->latest()
         						->paginate($this->perPage)
+
         ]);
     }
 
@@ -43,7 +46,7 @@ class PacientesTable extends Component
     {
         $this->search = '';
         $this->page = 1;
-        $this->perPage = '5';
+        $this->perPage = 5;
     }
 
 
@@ -52,8 +55,17 @@ class PacientesTable extends Component
     public function modal()
     {
         $this->empty();
-        $this->foto = Storage::url('foto-pacientes\default-user.jpg');
         $this->openModal = true;
+    }
+
+
+
+    public function updatedPhoto()
+    {
+        $this->validate([
+            'foto' => 'image|max:1024', // 1MB Max
+            'photo_preview' => 'image|max:1024', // 1MB Max
+        ]);
     }
 
 
@@ -61,22 +73,26 @@ class PacientesTable extends Component
     public function store()
     {
         $this->validate([
-            'foto' => 'image|max:1024', // 1MB Max
+            'dni' => 'required|integer|digits_between:7,8',
+            'name' => 'required',
+            'email' => 'required|email',
+            'telefono' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'domicilio' => 'required',
+            'anio' => 'required|integer',
+            'profesion' => 'required',
         ]);
-        $this->foto->store('foto-pacientes');
-        Paciente::create([
-            'dni' => '36269830',
-            'nombre' => $this->name,
-            'email' => $this->email,
-            'foto_path' => $this->foto,
-            'telefono' => $this->telefono,
-            'domicilio' => $this->domicilio,
-            'edad' => $this->anio,
-            'ocupacion' => $this->profesion,
-            'edad' => $this->anio,
-            'estado' => true,
-        ]);
-        $this->empty();
+        $filePath = $this->foto->store('profile-photos', 'public');
+        $paciente = new Paciente();
+        $paciente->dni = $this->dni;
+        $paciente->nombre = $this->name;
+        $paciente->email = $this->email;
+        $paciente->telefono = $this->telefono;
+        $paciente->edad = $this->anio;
+        $paciente->ocupacion = $this->profesion;
+        $paciente->domicilio = $this->domicilio;
+        $paciente->profile_photo_path = $filePath;
+        $paciente->estado = true;
+        $paciente->save();
         $this->closeModal();
     }
 
@@ -84,9 +100,10 @@ class PacientesTable extends Component
     
     public function closeModal()
     {
+        $this->empty();
         $this->openModal = false;
         $this->editMode = false;
-        $this->empty();
+        $this->readOnly = false;
     }
 
 
@@ -94,6 +111,18 @@ class PacientesTable extends Component
     public function showModal(Paciente $paciente)
     {
         $this->openModal = !$this->openModal;
+        $this->editMode = !$this->editMode;
+        $this->readOnly = !$this->readOnly;
+        $this->paciente_id = $paciente->id;
+        $this->name = $paciente->nombre;
+        $this->dni = $paciente->dni;
+        $this->email = $paciente->email;
+        $this->foto = $paciente->profile_photo_url;
+        $this->telefono = $paciente->telefono;
+        $this->domicilio = $paciente->domicilio;
+        $this->anio = $paciente->edad;
+        $this->profesion = $paciente->ocupacion;
+        $this->estado = true;
 
     }
 
@@ -104,8 +133,9 @@ class PacientesTable extends Component
         $this->editMode = !$this->editMode;
         $this->paciente_id = $paciente->id;
         $this->name = $paciente->nombre;
+        $this->dni = $paciente->dni;
         $this->email = $paciente->email;
-        $this->foto = $paciente->foto_path;
+        $this->foto = $paciente->profile_photo_url;
         $this->telefono = $paciente->telefono;
         $this->domicilio = $paciente->domicilio;
         $this->anio = $paciente->edad;
@@ -117,20 +147,27 @@ class PacientesTable extends Component
 
     public function update()
     {
-        $paciente = Paciente::find($this->paciente_id);
-        $paciente->update([
-            'dni' => '36269830',
-            'nombre' => $this->name,
-            'email' => $this->email,
-            'foto_path' => $this->foto,
-            'telefono' => $this->telefono,
-            'domicilio' => $this->domicilio,
-            'ocupacion' => $this->profesion,
-            'edad' => $this->anio,
-            'estado' => $this->estado,
-            'edad' => $this->anio,
+        $this->validate([
+            'dni' => 'required|integer|digits_between:7,8',
+            'name' => 'required',
+            'email' => 'required|email',
+            'telefono' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'anio' => 'required|integer',
+            'profesion' => 'required',
+            'domicilio' => 'required',
         ]);
-        $this->empty();
+        $filePath_edit = $this->photo_preview->store('profile-photos', 'public');
+        $paciente_edit = Paciente::find($this->paciente_id);
+        $paciente_edit->dni = $this->dni;
+        $paciente_edit->nombre = $this->name;
+        $paciente_edit->email = $this->email;
+        $paciente_edit->telefono = $this->telefono;
+        $paciente_edit->edad = $this->anio;
+        $paciente_edit->ocupacion = $this->profesion;
+        $paciente_edit->domicilio = $this->domicilio;
+        $paciente_edit->profile_photo_path = $filePath_edit;
+        $paciente_edit->estado = true;
+        $paciente_edit->save();
         $this->closeModal();
 
     }
@@ -139,20 +176,6 @@ class PacientesTable extends Component
     public function destroy(Paciente $paciente)
     {
         $paciente->delete();
-    }
-
-
-
-
-
-    public function getPhoto()
-    {
-        $this->validate([
-            'foto' => 'image|max:1024', // 1MB Max
-        ]);
-
-        $path = $this->foto->store('foto-pacientes');
-        $this->foto = $path;
     }
 
 
@@ -173,6 +196,7 @@ class PacientesTable extends Component
             'anio',
             'profesion',
             'estado',
+            'photo_preview'
         ]);
     }
 }

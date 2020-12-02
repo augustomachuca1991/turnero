@@ -22,7 +22,7 @@ class CreatePacientesTable extends Migration
             $table->Integer('edad');
             $table->string('domicilio');
             $table->string('ocupacion');
-            $table->text('foto_path')->nullable();
+            $table->text('profile_photo_path')->nullable();
             $table->boolean('estado');
             $table->timestamps();
         });

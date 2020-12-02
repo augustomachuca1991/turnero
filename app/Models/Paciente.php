@@ -15,8 +15,10 @@ class Paciente extends Model
      * @var array
      */
     protected $fillable = [
-        'dni', 'nombre', 'email', 'telefono', 'edad', 'domicilio', 'estado', 'ocupacion'
+        'dni', 'nombre', 'email', 'telefono', 'edad', 'domicilio', 'estado', 'ocupacion','foto_path'
     ];
+
+
 
     /**
      * The accessors to append to the model's array form.
