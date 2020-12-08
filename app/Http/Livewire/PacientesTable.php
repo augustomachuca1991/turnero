@@ -32,7 +32,7 @@ class PacientesTable extends Component
     public function render()
     {
         return view('livewire.pacientes-table' , [
-        	'pacientes' => Paciente::where('nombre' ,'LIKE' ,"%{$this->search}%")
+        	'pacientes' => Paciente::where('name' ,'LIKE' ,"%{$this->search}%")
         						->orWhere('email' ,'LIKE' ,"%{$this->search}%")
                                 ->latest()
         						->paginate($this->perPage)
@@ -84,7 +84,7 @@ class PacientesTable extends Component
         $filePath = $this->foto->store('profile-photos', 'public');
         $paciente = new Paciente();
         $paciente->dni = $this->dni;
-        $paciente->nombre = $this->name;
+        $paciente->name = $this->name;
         $paciente->email = $this->email;
         $paciente->telefono = $this->telefono;
         $paciente->edad = $this->anio;
@@ -114,7 +114,7 @@ class PacientesTable extends Component
         $this->editMode = !$this->editMode;
         $this->readOnly = !$this->readOnly;
         $this->paciente_id = $paciente->id;
-        $this->name = $paciente->nombre;
+        $this->name = $paciente->name;
         $this->dni = $paciente->dni;
         $this->email = $paciente->email;
         $this->foto = $paciente->profile_photo_url;
@@ -132,7 +132,7 @@ class PacientesTable extends Component
         $this->openModal = !$this->openModal;
         $this->editMode = !$this->editMode;
         $this->paciente_id = $paciente->id;
-        $this->name = $paciente->nombre;
+        $this->name = $paciente->name;
         $this->dni = $paciente->dni;
         $this->email = $paciente->email;
         $this->foto = $paciente->profile_photo_url;
@@ -159,7 +159,7 @@ class PacientesTable extends Component
         $filePath_edit = $this->photo_preview->store('profile-photos', 'public');
         $paciente_edit = Paciente::find($this->paciente_id);
         $paciente_edit->dni = $this->dni;
-        $paciente_edit->nombre = $this->name;
+        $paciente_edit->name = $this->name;
         $paciente_edit->email = $this->email;
         $paciente_edit->telefono = $this->telefono;
         $paciente_edit->edad = $this->anio;

@@ -18,7 +18,7 @@
          <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <form wire:submit.prevent="update">
                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div class="sm:flex sm:items-end">
+                  <div class="sm:flex sm:items-start">
                      <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
                         <!-- Heroicon name: user-show -->
                         @if($readOnly)
@@ -284,7 +284,7 @@
                            </div>
                            @if($search !== '')
                            <button wire:click="clear" class="form-input rounded-md shadow-sm mt-1 ml-6 block hover:bg-gray-100">
-                              <svg class="flex-shrink-0 h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                              <svg class="flex-shrink-0 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                               </svg>
                            </button>
@@ -323,11 +323,11 @@
                                  <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                        <div class="flex-shrink-0">
-                                       <img class="h-10 w-10 rounded-full object-cover" src="{{$paciente->profile_photo_url}}" alt="{{$paciente->nombre}}">
+                                       <img class="h-10 w-10 rounded-full object-cover" src="{{$paciente->profile_photo_url}}" alt="{{$paciente->name}}">
                                        </div>
                                        <div class="ml-4">
                                           <div class="text-sm font-medium text-gray-900">
-                                             {{$paciente->nombre}}
+                                             {{$paciente->name}}
                                           </div>
                                           <div class="text-sm text-gray-500">
                                              {{$paciente->email}}

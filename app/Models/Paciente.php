@@ -15,7 +15,7 @@ class Paciente extends Model
      * @var array
      */
     protected $fillable = [
-        'dni', 'nombre', 'email', 'telefono', 'edad', 'domicilio', 'estado', 'ocupacion','foto_path'
+        'dni', 'name', 'email', 'telefono', 'edad', 'domicilio', 'estado', 'ocupacion','profile_photo_path'
     ];
 
 

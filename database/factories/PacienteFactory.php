@@ -24,7 +24,7 @@ class PacienteFactory extends Factory
         return [
             'dni' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            'nombre' => $this->faker->name,
+            'name' => $this->faker->name,
             'edad' => $this->faker->numberBetween($min = 10, $max = 60),
             'telefono' => $this->faker->e164PhoneNumber,
             'domicilio' => $this->faker->address,
